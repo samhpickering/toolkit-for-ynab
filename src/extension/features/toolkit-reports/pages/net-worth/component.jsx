@@ -241,7 +241,7 @@ export class NetWorthComponent extends React.Component {
           title: { text: '' },
           labels: {
             formatter: function () {
-              return formatCurrency(this.value);
+              return formatCurrency(ynab.convertToMilliDollars(this.value));
             },
             style: { color: 'var(--label_primary)' },
           },
@@ -251,6 +251,7 @@ export class NetWorthComponent extends React.Component {
         plotOptions: {
           area: {
             stacking: 'normal',
+            point: pointHover,
           },
         },
         series: assetAccounts,
@@ -273,7 +274,7 @@ export class NetWorthComponent extends React.Component {
           title: { text: '' },
           labels: {
             formatter: function () {
-              return formatCurrency(this.value);
+              return formatCurrency(ynab.convertToMilliDollars(this.value));
             },
             style: { color: 'transparent' },
           },
@@ -442,9 +443,9 @@ export class NetWorthComponent extends React.Component {
         const seriesId = accountSeriesIds.get(id);
 
         if (balance > 0) {
-          assetAccounts[seriesId].data[month] = balance;
+          assetAccounts[seriesId].data[month] = ynab.convertFromMilliDollars(balance);
         } else {
-          debtAccounts[seriesId].data[month] = balance;
+          debtAccounts[seriesId].data[month] = ynab.convertFromMilliDollars(balance);
         }
       });
     });
